@@ -1,6 +1,5 @@
-package me.clickism.subcommandapi.argument.player;
+package me.clickism.subcommandapi.argument;
 
-import me.clickism.subcommandapi.argument.MultipleArgument;
 import me.clickism.subcommandapi.command.CommandException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

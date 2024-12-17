@@ -1,35 +1,32 @@
-package me.clickism.subcommandapi.argument.player;
+package me.clickism.subcommandapi.argument;
 
-import me.clickism.subcommandapi.argument.Argument;
 import me.clickism.subcommandapi.command.CommandException;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents an argument that parses a single offline player.
+ * Represents an argument that is a single player.
  */
-public class SingleOfflinePlayerArgument extends Argument<OfflinePlayer> {
+public class SinglePlayerArgument extends Argument<Player> {
     /**
-     * Creates a new single offline player argument.
+     * Create a new single player argument with the given name and required status.
      *
-     * @param name     the key of the argument
+     * @param name     the name of the argument
      * @param required whether the argument is required
      */
-    public SingleOfflinePlayerArgument(String name, boolean required) {
+    public SinglePlayerArgument(String name, boolean required) {
         super(name, required);
     }
 
     @Override
     public List<String> getTabCompletion(CommandSender sender, String arg) {
-        List<String> list = Arrays.stream(Bukkit.getOfflinePlayers())
-                .map(OfflinePlayer::getName)
+        List<String> list = Bukkit.getOnlinePlayers().stream()
+                .map(Player::getName)
                 .collect(Collectors.toCollection(ArrayList::new));
         list.add("@r");
         list.add("@p");
@@ -37,7 +34,8 @@ public class SingleOfflinePlayerArgument extends Argument<OfflinePlayer> {
         return list;
     }
 
-    public OfflinePlayer parse(CommandSender sender, String arg) {
+    @Override
+    public Player parse(CommandSender sender, String arg) {
         if (arg.equalsIgnoreCase("@p") || arg.equalsIgnoreCase("@s")) {
             if (sender instanceof Player player) {
                 return player;
@@ -45,14 +43,16 @@ public class SingleOfflinePlayerArgument extends Argument<OfflinePlayer> {
             throw new CommandException("Only players can use this selector.");
         }
         if (arg.equalsIgnoreCase("@r")) {
-            OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
-            if (offlinePlayers.length == 0) {
+            if (Bukkit.getOnlinePlayers().isEmpty()) {
                 throw new CommandException("No players online.");
             }
-            return offlinePlayers[(int) (Math.random() * offlinePlayers.length)];
+            Player[] players = Bukkit.getOnlinePlayers().toArray(Player[]::new);
+            return players[(int) (Math.random() * players.length)];
         }
-        @SuppressWarnings("deprecation")
-        OfflinePlayer player = Bukkit.getOfflinePlayer(arg);
+        Player player = Bukkit.getPlayer(arg);
+        if (player == null) {
+            throw new CommandException("Invalid player: &l" + arg);
+        }
         return player;
     }
 }
