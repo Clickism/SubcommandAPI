@@ -110,7 +110,7 @@ public class CommandManager implements CommandExecutor {
      * @param resultType type of the message
      * @param message    message to send
      */
-    protected void sendMessage(CommandSender sender, CommandResult.CommandResultType resultType, String message) {
+    protected void sendMessage(CommandSender sender, CommandResult.CommandResultType resultType, @NotNull String message) {
         switch (resultType) {
             case SUCCESS -> sender.sendMessage(ChatColor.GREEN + message);
             case FAILURE -> sender.sendMessage(ChatColor.RED + message);
