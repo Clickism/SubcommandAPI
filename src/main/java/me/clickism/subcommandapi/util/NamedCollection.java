@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * A collection of named objects.
@@ -111,5 +113,28 @@ public class NamedCollection<T extends Named> extends AbstractCollection<T> {
             iterator.remove();
             selectionsMap.remove(current.getName());
         }
+    }
+
+    /**
+     * Creates a named collection from a collection of strings with an {@link ArrayList} as the base collection.
+     *
+     * @param strings collection of strings
+     * @return named collection
+     */
+    public static NamedCollection<? extends Named> of(Collection<String> strings) {
+        return NamedCollection.of(strings, ArrayList::new);
+    }
+
+    /**
+     * Creates a named collection from a collection of strings with the given collection supplier used for the base collection.
+     *
+     * @param strings            collection of strings
+     * @param collectionSupplier collection supplier
+     * @return named collection
+     */
+    public static NamedCollection<? extends Named> of(Collection<String> strings, Supplier<Collection<Named>> collectionSupplier) {
+        return new NamedCollection<>(strings.stream()
+                .map(name -> (Named) () -> name)
+                .collect(Collectors.toCollection(collectionSupplier)));
     }
 }
