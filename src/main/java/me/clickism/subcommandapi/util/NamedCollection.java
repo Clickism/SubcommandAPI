@@ -121,7 +121,7 @@ public class NamedCollection<T extends Named> extends AbstractCollection<T> {
      * @param strings collection of strings
      * @return named collection
      */
-    public static NamedCollection<? extends Named> of(Collection<String> strings) {
+    public static NamedCollection<Named> of(Collection<String> strings) {
         return NamedCollection.of(strings, ArrayList::new);
     }
 
@@ -132,7 +132,7 @@ public class NamedCollection<T extends Named> extends AbstractCollection<T> {
      * @param collectionSupplier collection supplier
      * @return named collection
      */
-    public static NamedCollection<? extends Named> of(Collection<String> strings, Supplier<Collection<Named>> collectionSupplier) {
+    public static NamedCollection<Named> of(Collection<String> strings, Supplier<Collection<Named>> collectionSupplier) {
         return new NamedCollection<>(strings.stream()
                 .map(name -> (Named) () -> name)
                 .collect(Collectors.toCollection(collectionSupplier)));
