@@ -59,7 +59,7 @@ public class SubcommandGroup extends Subcommand {
     protected CommandResult execute(CommandStack trace, CommandSender sender, ArgumentHandler argHandler) throws CommandException {
         Subcommand subcommand = argHandler.getOrNull(subcommandArgument);
         if (subcommand == null) {
-            return CommandResult.failure("Please provide a subcommand: &l" + getUsage());
+            return CommandResult.failureWithUsage("Please provide a subcommand: &l" + getUsage());
         }
         trace.push(subcommand);
         return subcommand.executeIfAllowed(trace, sender, argHandler.trimmed(subcommand));

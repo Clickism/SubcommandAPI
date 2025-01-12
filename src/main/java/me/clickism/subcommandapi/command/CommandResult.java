@@ -12,6 +12,10 @@ public final class CommandResult {
      */
     public enum CommandResultType {
         /**
+         * Represents a failed command execution with usage information.
+         */
+        FAILURE_WITH_USAGE,
+        /**
          * Represents a failed command execution.
          */
         FAILURE,
@@ -50,6 +54,25 @@ public final class CommandResult {
      */
     public static CommandResult success() {
         return new CommandResult(CommandResultType.SUCCESS, null);
+    }
+
+    /**
+     * Create a failure result with the given message and usage information.
+     *
+     * @param message the message to send to the command sender
+     * @return failure result
+     */
+    public static CommandResult failureWithUsage(String message) {
+        return new CommandResult(CommandResultType.FAILURE_WITH_USAGE, message);
+    }
+
+    /**
+     * Create a failure result with no message and usage information.
+     *
+     * @return failure result
+     */
+    public static CommandResult failureWithUsage() {
+        return new CommandResult(CommandResultType.FAILURE_WITH_USAGE, null);
     }
 
     /**
@@ -114,7 +137,8 @@ public final class CommandResult {
      * @return true if the command result is a failure
      */
     public boolean isFailure() {
-        return type == CommandResultType.FAILURE;
+        return type == CommandResultType.FAILURE_WITH_USAGE
+                || type == CommandResultType.FAILURE;
     }
 
     /**

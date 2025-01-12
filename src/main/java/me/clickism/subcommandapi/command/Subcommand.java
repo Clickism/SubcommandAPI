@@ -131,7 +131,7 @@ public abstract class Subcommand implements Named {
      */
     public CommandResult executeIfAllowed(CommandStack trace, CommandSender sender, ArgumentHandler argHandler) {
         if (!canExecute(sender)) {
-            return CommandResult.failure("You can't run this command.");
+            return CommandResult.failureWithUsage("You can't run this command.");
         }
         return execute(trace, sender, argHandler);
     }

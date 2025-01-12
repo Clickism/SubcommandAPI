@@ -62,7 +62,7 @@ public class CommandManager implements CommandExecutor {
             CommandResult result = subcommand.executeIfAllowed(trace, sender, argHandler);
             handleCommandResult(trace, sender, result);
         } catch (CommandException exception) {
-            handleCommandResult(trace, sender, CommandResult.failure(exception.getMessage()));
+            handleCommandResult(trace, sender, CommandResult.failureWithUsage(exception.getMessage()));
         } catch (Exception exception) {
             handleException(command, args, trace, sender, exception);
         }
@@ -78,7 +78,7 @@ public class CommandManager implements CommandExecutor {
      */
     protected void handleCommandResult(CommandStack trace, CommandSender sender, CommandResult result) {
         if (result.getMessage() == null) return;
-        if (result.isFailure()) {
+        if (result.getType() == CommandResult.CommandResultType.FAILURE_WITH_USAGE) {
             sendMessage(sender, result.getType(), result.getMessage() + "\nUsage: " + trace.buildUsage());
             return;
         }
@@ -95,7 +95,7 @@ public class CommandManager implements CommandExecutor {
      * @param exception exception that occurred
      */
     protected void handleException(Command command, String[] args, CommandStack trace, CommandSender sender, Exception exception) {
-        sendMessage(sender, CommandResult.CommandResultType.FAILURE,
+        sendMessage(sender, CommandResult.CommandResultType.FAILURE_WITH_USAGE,
                 "An error occurred while executing this command: &l" + exception.getMessage());
         String commandString = command.getLabel() + " " + String.join(" ", args);
         Bukkit.getLogger().log(Level.SEVERE,
@@ -113,7 +113,7 @@ public class CommandManager implements CommandExecutor {
     protected void sendMessage(CommandSender sender, CommandResult.CommandResultType resultType, @NotNull String message) {
         switch (resultType) {
             case SUCCESS -> sender.sendMessage(ChatColor.GREEN + message);
-            case FAILURE -> sender.sendMessage(ChatColor.RED + message);
+            case FAILURE, FAILURE_WITH_USAGE -> sender.sendMessage(ChatColor.RED + message);
             case WARNING -> sender.sendMessage(ChatColor.YELLOW + message);
         }
     }

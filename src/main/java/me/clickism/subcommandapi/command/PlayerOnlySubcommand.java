@@ -21,7 +21,7 @@ public abstract class PlayerOnlySubcommand extends Subcommand {
     @Override
     protected CommandResult execute(CommandStack trace, CommandSender sender, ArgumentHandler argHandler) throws CommandException {
         if (!(sender instanceof Player player)) {
-            return CommandResult.failure("Only players can use this command.");
+            return CommandResult.failureWithUsage("Only players can use this command.");
         }
         return execute(trace, player, argHandler);
     }
