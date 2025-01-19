@@ -92,9 +92,13 @@ public abstract class Subcommand implements Named {
      * @return the usage of the subcommand
      */
     public String getUsage() {
-        return getArguments().stream()
+        String arguments = getArguments().stream()
                 .map(Argument::getHint)
                 .collect(Collectors.joining(" "));
+        String flags = getFlags().stream()
+                .map(flag -> "(--" + flag + ")")
+                .collect(Collectors.joining(" "));
+        return arguments + " " + flags;
     }
 
     /**
