@@ -112,13 +112,10 @@ public abstract class Subcommand implements Named {
     public List<String> getTabCompletion(int index, CommandSender sender, String[] args) {
         List<Argument<?>> arguments = getArguments();
         String arg = args[index];
-        if (arg.startsWith("--") && !flags.isEmpty()) {
+        if (index >= arguments.size() || (arg.startsWith("--") && !flags.isEmpty())) {
             return flags.stream()
                     .map(flag -> "--" + flag)
                     .collect(Collectors.toList());
-        }
-        if (index >= arguments.size()) {
-            return List.of();
         }
         return arguments.get(index).getTabCompletion(sender, arg);
     }
