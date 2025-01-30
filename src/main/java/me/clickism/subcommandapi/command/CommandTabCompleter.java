@@ -46,6 +46,7 @@ public class CommandTabCompleter implements TabCompleter {
     }
 
     private static boolean isTabCompletionCandidate(String string, String searchText) {
+        if (string == null) return false;
         return isSubsequence(string.toLowerCase(), searchText.toLowerCase());
     }
 
