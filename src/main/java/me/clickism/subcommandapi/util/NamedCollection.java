@@ -137,4 +137,16 @@ public class NamedCollection<T extends Named> extends AbstractCollection<T> {
                 .map(name -> (Named) () -> name)
                 .collect(Collectors.toCollection(collectionSupplier)));
     }
+
+    /**
+     * Creates an immutable named collection from a collection of named objects.
+     *
+     * @param ts  named objects
+     * @param <T> type of the named objects
+     * @return named collection
+     */
+    @SafeVarargs
+    public static <T extends Named> NamedCollection<T> of(T... ts) {
+        return new NamedCollection<>(List.of(ts));
+    }
 }
