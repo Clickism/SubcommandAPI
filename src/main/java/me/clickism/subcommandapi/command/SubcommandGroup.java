@@ -26,6 +26,15 @@ public class SubcommandGroup extends Subcommand {
     }
 
     /**
+     * Create a new subcommand group with the given label.
+     *
+     * @param label the label of the subcommand group
+     */
+    public SubcommandGroup(String label) {
+        this(label, false);
+    }
+
+    /**
      * Add a subcommand to the group.
      *
      * @param subcommand the subcommand to add

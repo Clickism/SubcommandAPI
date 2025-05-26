@@ -15,12 +15,12 @@ public abstract class Subcommand implements Named {
     /**
      * The label of the subcommand.
      */
-    protected final String label;
+    protected String label;
 
     /**
      * Whether the subcommand requires operator permissions.
      */
-    protected final boolean requiresOp;
+    protected boolean requiresOp;
 
     private final List<Argument<?>> arguments = new ArrayList<>();
     private final List<String> flags = new ArrayList<>();
@@ -34,6 +34,25 @@ public abstract class Subcommand implements Named {
     public Subcommand(String label, boolean requiresOp) {
         this.label = label;
         this.requiresOp = requiresOp;
+    }
+
+    /**
+     * Create a new subcommand with the given label.
+     *
+     * @param label the label of the subcommand
+     */
+    public Subcommand(String label) {
+        this(label, false);
+    }
+
+    public Subcommand setRequiresOp() {
+        this.requiresOp = true;
+        return this;
+    }
+
+    public Subcommand setLabel(String label) {
+        this.label = label;
+        return this;
     }
 
     /**
